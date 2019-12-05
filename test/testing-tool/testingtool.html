@@ -1,0 +1,44 @@
+<html>
+    <head>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" src="./index.js"></script> 
+        <script type="text/javascript" src="./ezto_ext_api.js"></script> 
+
+        <script>
+            var dName = document.domain;
+            if ((dName.indexOf(".com") > -1) && (dName.indexOf(".") > -1)) {
+                var temp = dName.split(".");
+                dName = temp[temp.length - 2] + "." + temp[temp.length - 1];
+            }
+            //alert('rig base domain: ' + dName);
+            document.domain= dName;
+        </script>
+    </head>
+
+    <body>
+        <div>
+            <p>
+                <label>Numebr 1 : </label>
+                <input type="number" id ="number1" placeholder="Enter 1st number">
+            </p>
+            <p>
+                <label>Numebr 2 : </label>
+                <input type="number" id="number2" placeholder="Enter 2nd number">
+            </p>
+            <p>
+                <label>Total : </label>
+                <input type="number" id="answer" placeholder="Enter your answer">
+            </p>
+            <!-- <p>
+                <label>Score : </label>
+                <input type="number" id="score" value=0>
+            </p> -->
+            <p>
+                <button id="sub" type="submit" onclick="onSubmit()" >Submit</button>
+        
+              
+            </p>
+            <p id="data"></p>
+        </div>
+    </body>
+</html>

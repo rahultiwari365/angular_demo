@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<title>McGraw-Hill's Accounting Tool - EZTO External Question API Test Rig (v1.0.4, 9/9/2010)</title>
+<!--
+  Caveat Scriptor
+
+  This MUST be run served from from a web server in order for cross frame
+  communication to function.  Any web server - localhost is fine, 127.0.0.1
+  is not...
+
+  In operation, the base domains of the web servers, EZTO and the web page
+  hosting server, must agree - e.g. both mhhe.com or both mcgraw-hill.com.
+
+  API Author:  Malcolm Duncan wmd@clearlearning.com
+-->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="../EZTestOnline/ezto_ext.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+  var dName = document.domain;
+  if ((dName.indexOf(".com") > -1) && (dName.indexOf(".") > -1)) {
+    var temp = dName.split(".");
+    dName = temp[temp.length - 2] + "." + temp[temp.length - 1];
+  }
+  //alert('rig base domain: ' + dName);
+  document.domain= dName;
+
+  /*
+  var	MODE_PREVIEW 		= "preview";	// mode showing correct answers in place
+  var	MODE_TEST			= "test";		// standard student mode
+  var	MODE_PREGRADE		= "sample";		// mode to pregrade only items answered
+  var	MODE_POST_TEST		= "review";		// mode to fully grade/score the object
+  */
+
+  function doit()
+  {
+    if($('iframe').length === 0) {
+      var iFrameHTML= '<br>&nbsp;<br><iframe class="wk_ex_iframe" style="z-index: 1" ';
+       iFrameHTML += 'name="ext_012345678_1" id="ext_012345678_1" frameborder="0" ';
+       iFrameHTML += 'src="' + $('#identifier').val() + '?ext_012345678_1" ';
+       iFrameHTML += 'width="' + $('#frame_width').val() + '" ';
+       iFrameHTML += 'height="' + $('#frame_height').val() + '">';
+       iFrameHTML += '</iframe>';
+       $('#testFrame').html(iFrameHTML);
+      } else {
+       $('iframe').attr({
+         'src' : $('#identifier').val() + '?ext_012345678_1'
+        });
+       }
+  }
+
+  function copyState()
+  {
+    $('#ext_012345678_1_state').val( $('#ext_012345678_1_ostate').val() );
+  }
+</script>
+
+</head>
+
+<body>
+  <span style="font-size: 14pt; font-weight: bold;">
+    EZTO External Object Authoring Test Rig (v1.0.3, 8/27/2010)
+  </span><br>
+  <i><u>must</u> be rendered by a web server</i>
+  <br>&nbsp;<br>
+
+  <form name="testrig" onsubmit="return false;">
+
+    <table style="float: left;">
+    <tr>
+      <td>
+        Object Path:&nbsp;
+        <input type="text" size="50" name="identifier" id="identifier" value="./testing-tool/testingtool.html">
+      </td>
+      <td>
+        Size:
+        <input type="text" size="4" value="900" id="frame_width">W x
+        <input type="text" size="4" value="600" id="frame_height">H
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Mode: <select name="mode_select" onchange="document.testrig.ext_012345678_1_mode.value= options[selectedIndex].value">
+          <option  selected="selected"  value="design">MODE_DESIGN</option>
+          <option value="test">MODE_TEST</option>
+          <option value="preview">MODE_PREVIEW</option>
+          <option value="sample">MODE_PREGRADE</option>
+          <option value="review">MODE_POST_TEST</option>
+        </select>&nbsp;
+        <input type="hidden" name="ext_012345678_1_mode" id="ext_012345678_1_mode" value="design">
+      </td>
+    </tr>
+
+    <tr>
+      <td valign="top">
+        <br><b>Input State:</b><br>
+        <a><textarea name="ext_012345678_1_state" id="ext_012345678_1_state" rows="5" cols="50" spellcheck="false">0</textarea></a>
+        <br><button onclick="doit();">Load API Below</button>
+      </td>
+      <td>
+        <br><button id="get" onclick="extTestGather();">Retrieve Output</button>&nbsp;
+        <i>Output State:</i><br>
+        <a><textarea name="ext_012345678_1_ostate" id="ext_012345678_1_ostate" rows="5" cols="50" spellcheck="false"></textarea></a>
+        <br>
+        <i>Score:</i>&nbsp;
+        <input type="text" name="ext_012345678_1_eval" id="ext_012345678_1_eval">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="copyState();">&lt;- copy ^ to input</button>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2" id="testFrame" align="center">
+        <br>&nbsp;<br>
+        <!-- <iframe class="wk_ex_iframe" style="z-index: 1"
+          name="ext_012345678_1" id="ext_012345678_1" frameborder="0" src="./testing-tool/testingtool.html"> </iframe> -->
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <br>Sample Policy (p_acct_nodropdown)<input type="text" id="p_acct_nodropdown" value="rad1">(p_acct_autocalc)<input type="text" id="p_acct_autocalc" value="rad1">
+        <br>Sample Params <input type="text" id="activityId" name="activityId" value="preview">
+        <br>Sample Randoms  <input type="text" size="80" id="ext_012345678_rnd" value="xy(19)=0;xy(4)=10;xy(7)=10;xy(30)=5;xy(33)=0;xy(22)=15;xy(25)=7;xy(28)=5;xy=1;xy(11)=13;xy(14)=63;xy(17)=81;xy(2)=1;xy(5)=4;xy(8)=7;xy(31)=14;xy(34)=10;xy(20)=19;xy(23)=9;xy(26)=-1;xy(29)=16;xy(12)=32;xy(15)=72;xy(18)=80;xy(3)=2;xy(6)=5;xy(9)=8;xy(32)=13;xy(21)=17;xy(24)=6;xy(27)=13;xy(10)=0;xy(13)=49;xy(16)=78;xy(1)=0"/>
+        <!-- input type="text" size="80" id="ext_012345678_1_rnd" value="a=5;b=10;c[0]=abacab" -->
+        <br>Media <textarea id="ext_012345678_1_media" rows="4" cols="80">http://localhost/ExternalAPI/media/,apple.gif,eztest.jpg</textarea>
+      </td>
+    </tr>
+
+    </table>
+    <table style="float: right;">
+      <thead><tr><th>Sl. no.</th><th> Instructions</th></tr></thead>
+      <tbody>
+         <tr><td>1.</td><td> The default mode of the tool is MODE_TEST </td></tr>
+         <tr><td>2.</td><td> Change the mode to MODE_DESIGN </td></tr>
+         <tr><td>3.</td><td> Click on "Load API below" button </td></tr>
+         <tr><td>4.</td><td> By default the tool loads the 6x10 spreadsheet </td></tr>
+         <tr><td>5.</td><td> Apply required functionalities on the sheet </td></tr>
+         <tr><td>6.</td><td> <u>For example:</u> Select a cell. Click on the "Apply border" icon, an  select a border style</td></tr>
+         <tr><td>7.</td><td> To retrieve the output, click on the "Retrieve Output" button </td></tr>
+         <tr><td>8.</td><td> The encrypted data is popoulated in the texarea </td></tr>
+         <tr><td>9.</td><td> Click on the "copy to input" button to copy the content of the output textarea to input textarea</td></tr>
+         <tr><td>10.</td><td> Change the mode to MODE_TEST, and click on "Load API below" button</td></tr>
+         <tr><td>11.</td><td> The API for the encrypted data is loaded into the &lt;iframe&gt; </td></tr>
+      </tbody>
+    </table>
+
+  </form>
+
+  </body>
+</html>
